@@ -1,64 +1,119 @@
 package question2;
 
-import question1.PilePleineException;
-import question1.PileVideException;
-
-/**
- * A remplacer en partie par votre classe Pile de la question 1.
- * 
- * @author (votre nom)
- * @version (un numÃ©ro de version ou une date)
- */
-public class Pile implements PileI {
-
+	public class Pile implements PileI {
     private Object[] zone;
     private int ptr;
-
+    /**
+     * Constructeur par initialisation
+     * @param taille : nombre d'éléments de la pile.
+     */
     public Pile(int taille) {
-        // traiter le cas <=0
-        // a completer
+        if (taille <= 0){
+            taille = CAPACITE_PAR_DEFAUT;
+        }
+        this.zone = new Object[taille];
+        this.ptr = 0;
     }
-
+    
+    /**
+     * Constructeur par défaut.
+     */
     public Pile() {
-        this(0);
+        this(PileI.CAPACITE_PAR_DEFAUT);
     }
-
+    
+    /**
+     * Ajoute un objet à la pile.
+     * @param Object o : l'élément ajouté.
+     */
     public void empiler(Object o) throws PilePleineException {
-        // a completer
+        if (estPleine())
+            throw new PilePleineException();
+        this.zone[this.ptr] =o;
+        this.ptr++;
     }
-
+    
+    /**
+     * Supprime le dernier élément entré.
+     */
     public Object depiler() throws PileVideException {
-        // a completer
-        return null;
+        if (estVide())
+            throw new PileVideException();
+        this.ptr--;
+        return this.zone[ptr];
     }
-
+    
+    /**
+     * Retourne le dernier élément ajouté.
+     */
     public Object sommet() throws PileVideException {
-        // a completer
-        return null;
-    }
 
+        if (estVide())
+            throw new PileVideException();
+
+        return this.zone[ptr-1];
+    }
+    
+    /**
+     * Donne le nombre maximum d'éléments que peut contenir la pile.
+     */
     public int capacite() {
-        // a completer
-        return -1;
+        return this.zone.length;
     }
-
-    public int taille() {
-        // a completer
-        return -1;
+    
+    /**
+     * Donne le nombre d'éléments que contient la pile à cet instant.
+     */
+    public int taille() { 
+        if(estVide()){
+            ptr = 0;
+        }
+        return this.ptr;
     }
-
+    
+    /**
+     * Méthode retournant true si la pile est vide.
+     */
     public boolean estVide() {
-        // a completer
-        return false;
+        return this.ptr == 0;
     }
-
+    
+    /**
+     * Méthode retournant true si la pile est pleine.
+     */
     public boolean estPleine() {
-        // a completer
-        return false;
+        return this.ptr == this.zone.length;
     }
+    
+   
+ public boolean equals(Object o) {
 
-    public boolean equals(Object o) {
-        // a completer
+        if( this== o ){
+            return true;
+        }      
+        if(!(o instanceof Pile)){
+            return false;
+        }
+        Pile p1 = (Pile)o;
+
+        if (p1.taille() == this.taille() && p1.capacite() == this.capacite()){
+            boolean estEgale = false;
+            for(int i=zone.length - 1; i >=0; i--){
+                Object tmp = zone[i];
+                boolean egal = false;
+                for(int j = zone.length-1; j>=0; j--){
+                    if(tmp == p1.zone[i]){
+                        egal = true;
+                    }       
+                }
+                if(egal){
+                    estEgale = true;
+                }else{
+                    return false;
+                }
+            }
+            return true;
+        }                
         return false;
     }
 
@@ -68,7 +123,14 @@ public class Pile implements PileI {
     }
 
     public String toString() {
-        // a completer
-        return null;
+        StringBuffer sb = new StringBuffer("[");
+        for (int i = ptr - 1; i >= 0; i--) {
+            sb.append(zone[i].toString());
+            if (i > 0)
+                sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
     }
-}
+	}
+	

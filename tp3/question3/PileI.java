@@ -1,8 +1,5 @@
 package question3;
 
-import question1.PilePleineException;
-import question1.PileVideException;
-
 public interface PileI<T> {
 
     public final static int CAPACITE_PAR_DEFAUT = 6;
